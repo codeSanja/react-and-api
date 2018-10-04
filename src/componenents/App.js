@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import News from './News/News'
 
-const items =
-    [
-        {id: 1, title: 'aaa'},
-        {id: 2, title: 'bbb'}
-    ]
-;
-
 class App extends Component {
   render() {
     return (
@@ -18,7 +11,8 @@ class App extends Component {
             Latest news
           </p>
         </header>
-        <News items={items} />
+        <News what="everything" query="q=apple" />
+        <News what="top-headlines" query="q=bitcoin" />
       </div>
     );
   }

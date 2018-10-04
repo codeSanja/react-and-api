@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NewsItem from "./NewsItem";
+import NewSingle from "./NewSingle";
 
 class News extends Component {
 
@@ -7,11 +7,12 @@ class News extends Component {
         super(props);
         this.state = {
             news: []
-        }
+        };
     }
 
     componentDidMount() {
-        const url = "https://newsapi.org/v2/everything?q=bitcoin&from=2018-09-04&sortBy=publishedAt&apiKey=6e5c267c79df471fb84335d6cfa58ee5";
+        const { what, query } = this.props;
+        const url = `https://newsapi.org/v2/${what}?${query}&from=2018-09-04&sortBy=publishedAt&apiKey=6e5c267c79df471fb84335d6cfa58ee5`;
 
         fetch(url)
             .then((response) => {
@@ -27,19 +28,19 @@ class News extends Component {
             })
     }
 
-    rennderItems(){
+    renderItems(){
         const { news } = this.state;
 
         return news.map((item, index) => {
-            return <NewsItem key={index} title={item.title} />;
+            return <NewSingle key={index} item={item} />;
         });
     }
 
     render() {
         return (
-            <ul>
-                {this.rennderItems()}
-            </ul>
+            <div className="row">
+                {this.renderItems()}
+            </div>
         );
     }
 }
