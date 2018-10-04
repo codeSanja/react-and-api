@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import NewSingle from './NewSingle'
+import axios from 'axios';
+import SingleSide from './SingleSide'
 import Error from './Error'
 
-class News extends Component {
+class Sidenews extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            news: [],
+            sidenews: [],
             error: false
         };
     }
@@ -17,46 +18,43 @@ class News extends Component {
         const { what, query } = this.props;
         const url = `https://newsapi.org/v2/${what}?${query}&from=2018-09-04&sortBy=publishedAt&apiKey=6e5c267c79df471fb84335d6cfa58ee5`;
 
-        fetch(url)
+        axios.get(url)
             .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
                 this.setState({
-                    news: data.articles
-                });
+                    sidenews: response.data.articles
+                })
             })
             .catch(() => {
                 this.setState({
                     error: true
-                });
+                })
             })
     }
 
-    renderItems(){
-        const { news, error } = this.state;
+    renderItems() {
+        const { sidenews, error } = this.state;
 
         if(error) {
             return <Error />;
         }
 
-        return news.map((item, index) => {
-            return <NewSingle key={index} item={item} />;
+        return sidenews.map((item, index) => {
+            return <SingleSide key={index} item={item} />;
         });
     }
 
     render() {
         return (
-            <div className="row">
+            <div>
                 {this.renderItems()}
             </div>
         );
     }
 }
 
-News.propTypes = {
+Sidenews.propTypes = {
     what: PropTypes.string.isRequired,
     query: PropTypes.string.isRequired,
 };
 
-export default News;
+export default Sidenews;
